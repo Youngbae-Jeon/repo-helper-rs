@@ -1,7 +1,8 @@
-use async_trait::async_trait;
 use mysql_async::{Conn, prelude::{Queryable, StatementLike, AsQuery}, Params, Result, Transaction, QueryResult, TextProtocol, Statement, BinaryProtocol};
 use mysql_common::prelude::FromRow;
 use tokio::sync::MutexGuard;
+
+use crate::{UpdateResult, InsertResult};
 
 type BoxFuture<'a, T> = futures_core::future::BoxFuture<'a, Result<T>>;
 
@@ -63,20 +64,6 @@ impl Queryable for QueryObject<'_> {
 			QueryObject::Conn(conn) => conn.exec_batch(stmt, params_iter),
 			QueryObject::Tx(tx) => tx.exec_batch(stmt, params_iter),
 		}
-	}
-}
-
-pub struct InsertResult(u64);
-impl InsertResult {
-	pub fn last_insert_id(&self) -> u64 {
-		self.0
-	}
-}
-
-pub struct UpdateResult(u64);
-impl UpdateResult {
-	pub fn affected_rows(&self) -> u64 {
-		self.0
 	}
 }
 
@@ -153,9 +140,4 @@ impl QueryObject<'_> {
 		qr.drop_result().await?;
 		Ok(UpdateResult(affected_rows))
 	}
-}
-
-#[async_trait]
-pub trait GetQueryObject: Sync + Send {
-	async fn get_query_object(&self) -> Result<QueryObject>;
 }

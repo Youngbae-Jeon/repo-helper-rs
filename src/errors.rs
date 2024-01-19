@@ -4,8 +4,8 @@ use std::fmt::{Debug, Display, Formatter};
 pub struct EntityNotFoundError<K: Debug>(&'static str, K);
 
 impl<K: Debug> EntityNotFoundError<K> {
-	pub fn new(entity: &'static str, key: K) -> Self {
-		Self(entity, key)
+	pub fn new(entity_name: &'static str, key: K) -> Self {
+		Self(entity_name, key)
 	}
 }
 impl<K: Debug> Display for EntityNotFoundError<K> {

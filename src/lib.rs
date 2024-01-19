@@ -13,9 +13,16 @@ pub use definable::*;
 pub use filter::*;
 pub use sql_helper::*;
 
-#[cfg(feature = "mysql")]
+#[cfg(feature = "mysql_async_helper")]
 #[path = ""]
 pub mod mysql {
-	mod mysql_helper;
-	pub use mysql_helper::*;
+	mod mysql_async_helper;
+	pub use mysql_async_helper::*;
+}
+
+#[cfg(feature = "sqlx_mysql_helper")]
+#[path = ""]
+pub mod sqlx {
+	mod sqlx_mysql_helper;
+	pub use sqlx_mysql_helper::*;
 }
