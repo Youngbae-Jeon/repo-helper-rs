@@ -2,13 +2,10 @@ use std::fmt::Display;
 
 use crate::{Filter, RepoValue, NamedFilterHolder, NamedFilter};
 
+#[derive(Default)]
 pub struct SqlFilter<'a>(Vec<NamedFilter<'a>>);
 
 impl<'a> SqlFilter<'a> {
-	pub fn new() -> SqlFilter<'a> {
-		SqlFilter(Vec::new())
-	}
-
 	pub fn with<T: Into<RepoValue<'a>> + Clone>(mut self, field: &'a str, filter: &Filter<T>) -> Self {
 		self.0.push(NamedFilter::new(field, filter.map(|v| v.into())));
 		self

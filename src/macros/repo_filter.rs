@@ -138,7 +138,7 @@ macro_rules! repo_filter {
 	(@impl_into_sql_filter $(#[entity = $entity:ty])?  $name:ident { $( $prop:ident ),+ }) => {
 		impl<'a> From<&'a $name<'a>> for $crate::SqlFilter<'a> {
 			fn from(filter: &'a $name<'a>) -> $crate::SqlFilter<'a> {
-				$crate::SqlFilter::new()
+				$crate::SqlFilter::default()
 					$(
 						.with_named(&filter.$prop)
 					)+

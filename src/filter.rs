@@ -134,10 +134,7 @@ impl<'a> NamedFilterHolder<'a> {
 	}
 
 	pub fn to_named_filter(&'a self) -> Option<NamedFilter<'a>> {
-		if let Some(inner) = self.filter() {
-			Some(NamedFilter::new(self.name(), inner.clone()))
-		} else {
-			None
-		}
+		self.filter()
+			.map(|f| NamedFilter::new(self.name(), f.clone()))
 	}
 }

@@ -1,19 +1,19 @@
 use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub struct EntityNotFoundError<K: Debug>(&'static str, K);
+pub struct EntityNotFoundError<Key: Debug>(&'static str, Key);
 
-impl<K: Debug> EntityNotFoundError<K> {
-	pub fn new(entity_name: &'static str, key: K) -> Self {
+impl<Key: Debug> EntityNotFoundError<Key> {
+	pub fn new(entity_name: &'static str, key: Key) -> Self {
 		Self(entity_name, key)
 	}
 }
-impl<K: Debug> Display for EntityNotFoundError<K> {
+impl<Key: Debug> Display for EntityNotFoundError<Key> {
 	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
 		write!(f, "Not found {} {{id={:?}}})", self.0, self.1)
 	}
 }
-impl<K: Debug> std::error::Error for EntityNotFoundError<K> {}
+impl<Key: Debug> std::error::Error for EntityNotFoundError<Key> {}
 
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
