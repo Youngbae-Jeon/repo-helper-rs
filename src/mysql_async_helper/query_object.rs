@@ -68,7 +68,7 @@ impl Queryable for QueryObject<'_> {
 }
 
 impl QueryObject<'_> {
-	pub async fn _query<'a, T, Q>(&'a mut self, query: Q) -> Result<Vec<T>>
+	pub async fn query<'a, T, Q>(&'a mut self, query: Q) -> Result<Vec<T>>
 	where
 		Q: AsQuery + 'a,
 		T: FromRow + Send + 'static,
