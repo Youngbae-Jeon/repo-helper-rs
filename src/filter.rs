@@ -103,6 +103,10 @@ impl<'a> NamedFilterHolder<'a> {
 		self.1 = Some(Filter::Equal(value.into()));
 	}
 
+	pub fn not<T: Into<RepoValue<'a>>>(&mut self, value: T) {
+		self.1 = Some(Filter::Not(value.into()));
+	}
+
 	pub fn lt<T: Into<RepoValue<'a>>>(&mut self, value: T) {
 		self.1 = Some(Filter::LessorThan(value.into()));
 	}

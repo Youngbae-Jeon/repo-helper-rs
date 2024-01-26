@@ -64,43 +64,34 @@ macro_rules! repo_filter {
 				}
 
 				paste::paste! {
-					$(#[doc = $doc_prop])* 
 					pub fn [< $prop _lt>](mut self, value: $ty_prop) -> Self {
 						self.$prop.lt(value);
 						self
 					}
-
-					$(#[doc = $doc_prop])* 
 					pub fn [< $prop _elt>](mut self, value: $ty_prop) -> Self {
 						self.$prop.elt(value);
 						self
 					}
-
-					$(#[doc = $doc_prop])* 
 					pub fn [< $prop _gt>](mut self, value: $ty_prop) -> Self {
 						self.$prop.gt(value);
 						self
 					}
-
-					$(#[doc = $doc_prop])* 
 					pub fn [< $prop _egt>](mut self, value: $ty_prop) -> Self {
 						self.$prop.egt(value);
 						self
 					}
-
-					$(#[doc = $doc_prop])* 
+					pub fn [< $prop _not>](mut self, value: $ty_prop) -> Self {
+						self.$prop.not(value);
+						self
+					}
 					pub fn [< $prop _in>](mut self, values: Vec::<$ty_prop>) -> Self {
 						self.$prop.included_in(values);
 						self
 					}
-
-					$(#[doc = $doc_prop])* 
 					pub fn [< $prop _not_in>](mut self, values: Vec::<$ty_prop>) -> Self {
 						self.$prop.excluded_from(values);
 						self
 					}
-
-					$(#[doc = $doc_prop])* 
 					pub fn [< $prop _between>](mut self, value1: $ty_prop, value2: $ty_prop) -> Self {
 						self.$prop.between(value1, value2);
 						self
