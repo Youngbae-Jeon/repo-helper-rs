@@ -34,6 +34,14 @@ impl<T> Definable<T> {
 		self.is_defined_and(f)
 	}
 
+	pub fn map<U, F>(self, f: F) -> Definable<U>
+	where F: FnOnce(T) -> U {
+		match self {
+			Self::Defined(x) => Definable::Defined(f(x)),
+			Self::Undefined => Definable::Undefined,
+		}
+	}
+
 	pub const fn as_ref(&self) -> Option<&T> {
 		match *self {
 			Self::Defined(ref x) => Some(x),
