@@ -17,7 +17,7 @@ impl<T> Definable<T> {
 	pub const fn is_defined(&self) -> bool {
 		matches!(self, Definable::Defined(_))
 	}
-	pub fn is_defined_and(self, f: impl FnOnce(T) -> bool) -> bool {
+	pub fn is_defined_and(&self, f: impl FnOnce(&T) -> bool) -> bool {
 		match self {
 			Self::Undefined => false,
 			Self::Defined(x) => f(x),
@@ -30,7 +30,7 @@ impl<T> Definable<T> {
 	pub const fn is_some(&self) -> bool {
 		self.is_defined()
 	}
-	pub fn is_some_and(self, f: impl FnOnce(T) -> bool) -> bool {
+	pub fn is_some_and(&self, f: impl FnOnce(&T) -> bool) -> bool {
 		self.is_defined_and(f)
 	}
 
@@ -42,10 +42,23 @@ impl<T> Definable<T> {
 		}
 	}
 
-	pub const fn as_ref(&self) -> Option<&T> {
+	pub const fn as_option(&self) -> Option<&T> {
 		match *self {
 			Self::Defined(ref x) => Some(x),
 			Self::Undefined => None,
+		}
+	}
+
+	pub const fn as_ref(&self) -> Definable<&T> {
+		match *self {
+			Self::Defined(ref x) => Definable::Defined(x),
+			Self::Undefined => Definable::Undefined,
+		}
+	}
+	pub fn as_mut(&mut self) -> Definable<&mut T> {
+		match *self {
+			Self::Defined(ref mut x) => Definable::Defined(x),
+			Self::Undefined => Definable::Undefined,
 		}
 	}
 
@@ -60,6 +73,8 @@ impl<T> Definable<T> {
 		}
 	}
 }
+
+impl<T: Copy> Copy for Definable<T> {}
 
 impl<T: Copy> Definable<T> {
 	pub fn get(&self) -> Option<T> {
