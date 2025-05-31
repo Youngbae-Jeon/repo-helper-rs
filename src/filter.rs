@@ -42,7 +42,7 @@ impl<'a> NamedFilter<'a> {
 		self.0
 	}
 
-	pub fn filter(&'a self) -> &Filter<RepoValue<'a>> {
+	pub fn filter(&'a self) -> &'a Filter<RepoValue<'a>> {
 		&self.1
 	}
 
