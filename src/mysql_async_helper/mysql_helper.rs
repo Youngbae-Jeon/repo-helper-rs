@@ -11,12 +11,14 @@ impl FromRepoValue for Value {
 			RepoValue::Null => Value::NULL,
 			RepoValue::Int(v) => Value::from(v),
 			RepoValue::UInt(v) => Value::from(v),
+			RepoValue::Float(v) => Value::from(v),
 			RepoValue::Double(v) => Value::from(v),
 			RepoValue::Date(v) => Value::from(v),
 			RepoValue::Time(v) => Value::from(v),
 			RepoValue::DateTime(v) => Value::from(v),
 			RepoValue::Str(v) => Value::from(v),
 			RepoValue::String(v) => Value::from(v),
+			RepoValue::Bytes(v) => Value::from(v),
 		}
 	}
 }

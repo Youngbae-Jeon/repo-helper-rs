@@ -8,12 +8,14 @@ pub enum RepoValue<'a> {
 	Null,
 	Int(i64),
 	UInt(u64),
+	Float(f32),
 	Double(f64),
 	Date(NaiveDate),
 	Time(NaiveTime),
 	DateTime(NaiveDateTime),
 	Str(&'a str),
 	String(String),
+	Bytes(Vec<u8>),
 }
 
 impl Display for RepoValue<'_> {
@@ -22,12 +24,20 @@ impl Display for RepoValue<'_> {
 			RepoValue::Null => write!(f, "NULL"),
 			RepoValue::Int(v) => v.fmt(f),
 			RepoValue::UInt(v) => v.fmt(f),
+			RepoValue::Float(v) => v.fmt(f),
 			RepoValue::Double(v) => v.fmt(f),
 			RepoValue::Date(v) => write!(f, "'{}'", v),
 			RepoValue::Time(v) => write!(f, "'{}'", v),
 			RepoValue::DateTime(v) => write!(f, "'{}'", v),
 			RepoValue::Str(v) => write!(f, "'{}'", v),
 			RepoValue::String(v) => write!(f, "'{}'", v),
+			RepoValue::Bytes(v) => {
+				write!(f, "0x")?;
+				for byte in v {
+					write!(f, "{:02x}", byte)?;
+				}
+				Ok(())
+			}
 		}
 	}
 }
@@ -47,6 +57,16 @@ impl From<i64> for RepoValue<'_> {
 		RepoValue::Int(value)
 	}
 }
+impl From<u8> for RepoValue<'_> {
+	fn from(value: u8) -> Self {
+		RepoValue::UInt(u64::from(value))
+	}
+}
+impl From<u16> for RepoValue<'_> {
+	fn from(value: u16) -> Self {
+		RepoValue::UInt(u64::from(value))
+	}
+}
 impl From<u32> for RepoValue<'_> {
 	fn from(value: u32) -> Self {
 		RepoValue::UInt(u64::from(value))
@@ -55,6 +75,12 @@ impl From<u32> for RepoValue<'_> {
 impl From<u64> for RepoValue<'_> {
 	fn from(value: u64) -> Self {
 		RepoValue::UInt(value)
+	}
+}
+
+impl From<f32> for RepoValue<'_> {
+	fn from(value: f32) -> Self {
+		RepoValue::Float(value)
 	}
 }
 impl From<f64> for RepoValue<'_> {
@@ -90,6 +116,18 @@ impl<'a> From<String> for RepoValue<'a> {
 impl<'a> From<&'a String> for RepoValue<'a> {
 	fn from(value: &'a String) -> Self {
 		RepoValue::Str(value)
+	}
+}
+
+impl<'a> From<Vec<u8>> for RepoValue<'a> {
+	fn from(value: Vec<u8>) -> Self {
+		RepoValue::Bytes(value)
+	}
+}
+
+impl<'a> From<&'a [u8]> for RepoValue<'a> {
+	fn from(value: &'a [u8]) -> Self {
+		RepoValue::Bytes(value.to_vec())
 	}
 }
 
